@@ -562,11 +562,9 @@ async function openSavedProjectsModal() {
                 });
 
                 div.querySelector('.btn-delete-saved').addEventListener('click', async (e) => {
+                    e.preventDefault();
                     e.stopPropagation();
-                    const titleToDelete = p.title;
-                    if (confirm(`Are you sure you want to delete "${titleToDelete}"?`)) {
-                        await deleteSavedProject(titleToDelete);
-                    }
+                    await deleteSavedProject(p.title);
                 });
 
                 body.appendChild(div);
@@ -592,8 +590,8 @@ async function deleteSavedProject(title) {
         const data = await res.json();
         hideLoading();
         if (data.success) {
-            openSavedProjectsModal();
-            fetchSavedProjectsCount();
+            await openSavedProjectsModal();
+            await fetchSavedProjectsCount();
         } else {
             alert('Error deleting project: ' + (data.error || 'Failed'));
         }
