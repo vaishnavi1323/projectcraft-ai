@@ -177,9 +177,10 @@
                     <p id="bp-tagline" class="text-muted">Multi-modal AI assistant for early disease screening and clinical triage in rural clinics</p>
                 </div>
                 <div class="blueprint-actions">
+                    <button id="btn-download-scaffold" class="btn-accent btn-sm"><i class="fa-solid fa-file-zipper"></i> Download Code (.zip)</button>
                     <button id="btn-save-bp" class="btn-primary btn-sm"><i class="fa-solid fa-bookmark"></i> Save Project</button>
                     <button id="btn-export-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-file-code"></i> Export README.md</button>
-                    <button id="btn-goto-mentor" class="btn-accent btn-sm"><i class="fa-solid fa-robot"></i> Open AI Mentor Studio</button>
+                    <button id="btn-goto-mentor" class="btn-secondary btn-sm"><i class="fa-solid fa-robot"></i> Open AI Mentor Studio</button>
                 </div>
             </div>
 
@@ -239,13 +240,36 @@
 
             <!-- Tab 4: Viva Prep -->
             <div id="tab-viva" class="tab-panel glass-card">
-                <h3><i class="fa-solid fa-user-ninja text-rose"></i> Evaluator Defense & Viva Voce Q&A Prep</h3>
+                <!-- LIVE VIVA SIMULATOR CARD -->
+                <div class="viva-simulator-card glass-card" style="margin-bottom: 2rem; border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.05);">
+                    <h3 style="color: var(--accent-rose); margin-bottom: 0.25rem;"><i class="fa-solid fa-gamepad"></i> Live Viva Voce Simulator & AI Examiner</h3>
+                    <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.25rem;">Practice defending your project live! Type your response to get graded out of 10 and see missing technical keywords.</p>
+                    
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="color: white; font-weight: 600;">Select Examiner Question to Practice:</label>
+                        <select id="viva-sim-q-select" class="form-input"></select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="color: white; font-weight: 600;">Your Defense Answer:</label>
+                        <textarea id="viva-sim-answer" class="form-input" rows="3" placeholder="e.g. We chose Python for rapid ML iteration and decoupled backend REST microservices..."></textarea>
+                    </div>
+
+                    <button id="btn-submit-viva-sim" class="btn-primary btn-sm" style="background: linear-gradient(135deg, var(--accent-rose), #E11D48);"><i class="fa-solid fa-graduation-cap"></i> Grade My Defense</button>
+
+                    <div id="viva-sim-result" class="hidden" style="margin-top: 1.25rem; background: rgba(10, 15, 26, 0.85); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <h3><i class="fa-solid fa-shield-halved text-rose"></i> Anticipated Evaluator Defense Cheat Sheet</h3>
                 <p>Anticipated questions external examiners will ask and master responses to secure high marks.</p>
 
                 <div class="viva-grid" id="viva-container">
                     <!-- Populated dynamically -->
                 </div>
             </div>
+
         </div>
 
         <!-- STEP 4: AI MENTOR STUDIO (Hidden Initially) -->

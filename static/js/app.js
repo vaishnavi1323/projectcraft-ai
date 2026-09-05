@@ -66,6 +66,10 @@ function initEventListeners() {
     // Save Blueprint Button
     document.getElementById('btn-save-bp').addEventListener('click', saveCurrentProject);
 
+    // Download Scaffold Zip Button
+    const btnZip = document.getElementById('btn-download-scaffold');
+    if (btnZip) btnZip.addEventListener('click', downloadScaffoldZip);
+
     // Export README Button
     document.getElementById('btn-export-readme').addEventListener('click', exportReadme);
     document.getElementById('btn-close-readme').addEventListener('click', () => {
@@ -73,8 +77,13 @@ function initEventListeners() {
     });
     document.getElementById('btn-copy-readme').addEventListener('click', copyReadmeText);
 
+    // Live Viva Simulator Submit
+    const btnVivaSim = document.getElementById('btn-submit-viva-sim');
+    if (btnVivaSim) btnVivaSim.addEventListener('click', submitVivaSimulator);
+
     // Saved Projects Modal
     document.getElementById('btn-saved-projects').addEventListener('click', openSavedProjectsModal);
+
     document.getElementById('btn-close-saved').addEventListener('click', () => {
         document.getElementById('saved-modal').classList.add('hidden');
     });
@@ -283,7 +292,10 @@ function populateBlueprintUI(bp) {
 
     // Viva Prep Tab
     const vivaContainer = document.getElementById('viva-container');
+    const vivaSelect = document.getElementById('viva-sim-q-select');
     vivaContainer.innerHTML = '';
+    if (vivaSelect) vivaSelect.innerHTML = '';
+
     bp.viva_qa.forEach(item => {
         const card = document.createElement('div');
         card.className = 'viva-card';
@@ -292,8 +304,105 @@ function populateBlueprintUI(bp) {
             <div class="viva-a"><i class="fa-solid fa-comment-dots text-emerald"></i> ${item.a}</div>
         `;
         vivaContainer.appendChild(card);
+
+        if (vivaSelect) {
+            const opt = document.createElement('option');
+            opt.value = item.q;
+            opt.textContent = item.q;
+            vivaSelect.appendChild(opt);
+        }
     });
 }
+
+// DOWNLOAD SCAFFOLD ZIP
+async function downloadScaffoldZip() {
+    if (!currentBlueprint) {
+        alert('Please select or generate a blueprint first!');
+        return;
+    }
+
+    showLoading("Packaging Project Starter Code (.zip)...");
+    try {
+        const res = await fetch('/api/download-scaffold', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentBlueprint)
+        });
+        const blob = await res.blob();
+        hideLoading();
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentBlueprint.title.replace(/[^a-zA-Z0-9_]/g, '_')}_scaffold.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    } catch (e) {
+        hideLoading();
+        alert('Error downloading code scaffold zip.');
+    }
+}
+
+// SUBMIT VIVA SIMULATOR
+async function submitVivaSimulator() {
+    if (!currentBlueprint) return;
+
+    const q = document.getElementById('viva-sim-q-select').value;
+    const ans = document.getElementById('viva-sim-answer').value.trim();
+
+    if (!ans) {
+        alert('Please type your answer to the examiner question first!');
+        return;
+    }
+
+    showLoading("Evaluating Defense with AI Examiner...");
+
+    try {
+        const res = await fetch('/api/viva-grade', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: q,
+                user_answer: ans,
+                project_title: currentBlueprint.title,
+                skills: [currentBlueprint.tech_stack.Backend, currentBlueprint.tech_stack.Frontend]
+            })
+        });
+        const data = await res.json();
+        hideLoading();
+
+        if (data.success && data.evaluation) {
+            const ev = data.evaluation;
+            const resDiv = document.getElementById('viva-sim-result');
+            resDiv.classList.remove('hidden');
+            resDiv.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-size: 1.2rem; font-weight: 700; color: var(--accent-rose);">
+                        Score: ${ev.score} / ${ev.max_score} (${ev.feedback_tier})
+                    </span>
+                </div>
+                <p style="color: #D1D5DB; margin-bottom: 0.75rem;">${ev.summary}</p>
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--accent-emerald); font-size: 0.85rem;">Detected Keywords:</strong> 
+                    ${ev.found_keywords.length > 0 ? ev.found_keywords.map(k => `<span class="pill-tech" style="background: rgba(16,185,129,0.2); color:#6EE7B7;">${k}</span>`).join(' ') : '<span style="color:var(--text-muted); font-size:0.85rem;">None detected</span>'}
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--accent-amber); font-size: 0.85rem;">Suggested Technical Keywords to Add:</strong> 
+                    ${ev.missing_keywords.map(k => `<span class="pill-tech" style="background: rgba(245,158,11,0.2); color:#FCD34D;">${k}</span>`).join(' ')}
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.88rem;">
+                    <strong style="color: var(--accent-cyan);">Master Response Benchmark:</strong>
+                    <p style="color: var(--text-muted); margin-top: 0.25rem;">${ev.model_answer}</p>
+                </div>
+            `;
+        }
+    } catch (e) {
+        hideLoading();
+        alert('Error evaluating answer.');
+    }
+}
+
 
 // RENDER MERMAID DIAGRAM
 function renderMermaidDiagram() {

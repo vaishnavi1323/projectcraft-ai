@@ -119,3 +119,44 @@ def get_mentor_advice(prompt_type, project_title, domain, skills, custom_questio
             ],
             "pro_tip": "💡 Keep your project modular so you can easily swap algorithms or datasets during live testing!"
         }
+
+def evaluate_viva_answer(question, user_answer, project_title, skills):
+    """
+    Evaluates a student's answer in the Live Viva Voce Simulator.
+    Computes a score (0-10), lists key technical terms present vs missing, and provides feedback.
+    """
+    ans = user_answer.strip().lower()
+    
+    # Calculate score based on depth and keywords
+    word_count = len(ans.split())
+    if word_count < 5:
+        score = 3
+        feedback_tier = "Needs Improvement"
+        summary = "Your answer was too brief for an external evaluator. Elaborate on implementation details."
+    elif word_count < 15:
+        score = 6
+        feedback_tier = "Satisfactory"
+        summary = "Good start, but missing key technical metrics and architectural rationale."
+    else:
+        score = 8.5 + (0.5 if "api" in ans or "model" in ans or "pipeline" in ans else 0)
+        score = min(10.0, score)
+        feedback_tier = "Strong Defense!"
+        summary = "Excellent answer! You demonstrated solid architectural understanding."
+
+    # Highlight keyword detection
+    technical_keywords = ["pipeline", "architecture", "latency", "accuracy", "quantization", "validation", "rest api", "explainability", "dataset"]
+    found_keywords = [k for k in technical_keywords if k in ans]
+    missing_keywords = [k for k in technical_keywords if k not in ans][:3]
+
+    model_answer = f"In {project_title or 'our system'}, we isolate core logic into modular services using {skills[0] if skills else 'Python'}, ensuring input validation, sub-second latency, and graceful error fallbacks under evaluator inspection."
+
+    return {
+        "score": score,
+        "max_score": 10,
+        "feedback_tier": feedback_tier,
+        "summary": summary,
+        "found_keywords": found_keywords,
+        "missing_keywords": missing_keywords,
+        "model_answer": model_answer
+    }
+

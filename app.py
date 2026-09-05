@@ -1,14 +1,42 @@
 import os
 import json
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from flask_cors import CORS
-from data_engine import generate_ideas_engine, generate_blueprint_engine
-from mentor_engine import get_mentor_advice
+from data_engine import generate_ideas_engine, generate_blueprint_engine, generate_scaffold_zip_bytes
+from mentor_engine import get_mentor_advice, evaluate_viva_answer
 
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/api/viva-grade', methods=['POST'])
+def viva_grade_api():
+    try:
+        data = request.json or {}
+        question = data.get('question', '')
+        user_answer = data.get('user_answer', '')
+        project_title = data.get('project_title', '')
+        skills = data.get('skills', [])
+
+        result = evaluate_viva_answer(question, user_answer, project_title, skills)
+        return jsonify({'success': True, 'evaluation': result})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/download-scaffold', methods=['POST'])
+def download_scaffold_api():
+    try:
+        blueprint = request.json or {}
+        zip_bytes, filename = generate_scaffold_zip_bytes(blueprint)
+        return Response(
+            zip_bytes,
+            mimetype='application/zip',
+            headers={'Content-Disposition': f'attachment; filename={filename}'}
+        )
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 SAVED_FILE = os.path.join(os.path.dirname(__file__), 'saved_projects.json')
+
 
 def load_saved_projects():
     if not os.path.exists(SAVED_FILE):
