@@ -395,3 +395,115 @@ SECRET_KEY = "hackathon_secret_key"
     buf.seek(0)
     return buf.getvalue(), f"{sanitized_title}_scaffold.zip"
 
+def generate_synthetic_csv(blueprint):
+    """
+    Generates a 50-row domain-specific synthetic CSV dataset.
+    """
+    domain = blueprint.get('domain', 'Healthcare')
+    title = blueprint.get('title', 'Dataset')
+    
+    if "Health" in domain:
+        headers = "patient_id,age,blood_pressure,heart_rate,spo2_pct,eeg_signal_mv,diagnostic_flag"
+        rows = [headers]
+        for i in range(1, 51):
+            bp_val = f"{random.randint(110, 160)}/{random.randint(70, 95)}"
+            hr = random.randint(60, 110)
+            spo2 = round(random.uniform(92.0, 99.5), 1)
+            eeg = round(random.uniform(0.1, 4.5), 3)
+            flag = 1 if (hr > 95 or spo2 < 94.0) else 0
+            rows.append(f"PAT_{i:03d},{random.randint(22, 78)},{bp_val},{hr},{spo2},{eeg},{flag}")
+    elif "Fin" in domain:
+        headers = "transaction_id,amount_usd,merchant_category,device_score,location_delta_km,fraud_flag"
+        categories = ["E-Commerce", "Grocery", "Jewelry", "Gas Station", "Digital Gaming"]
+        rows = [headers]
+        for i in range(1, 51):
+            amt = round(random.uniform(5.0, 2500.0), 2)
+            cat = random.choice(categories)
+            dev_score = round(random.uniform(0.1, 0.99), 2)
+            loc_delta = round(random.uniform(0.1, 850.0), 1)
+            fraud = 1 if (amt > 1000 and dev_score < 0.3) else 0
+            rows.append(f"TXN_{i:04d},{amt},{cat},{dev_score},{loc_delta},{fraud}")
+    else:
+        headers = "sample_id,sensor_vibration_hz,thermal_temp_c,network_latency_ms,confidence_score,status"
+        rows = [headers]
+        for i in range(1, 51):
+            vib = round(random.uniform(10.0, 120.0), 2)
+            temp = round(random.uniform(35.0, 85.0), 1)
+            lat = round(random.uniform(5.0, 120.0), 1)
+            conf = round(random.uniform(0.75, 0.99), 2)
+            status = "Normal" if temp < 70 else "Anomaly_Alert"
+            rows.append(f"SMP_{i:03d},{vib},{temp},{lat},{conf},{status}")
+            
+    csv_content = "\n".join(rows)
+    filename = f"{re.sub(r'[^a-zA-Z0-9_]', '_', title)}_synthetic_dataset.csv"
+    return csv_content, filename
+
+def generate_ieee_paper_html(blueprint):
+    """
+    Generates a publication-formatted IEEE 2-column paper manuscript.
+    """
+    title = blueprint.get('title', 'Final Year Project Paper')
+    tagline = blueprint.get('tagline', '')
+    problem = blueprint.get('problem_statement', '')
+    domain = blueprint.get('domain', 'Computer Science')
+    tech = blueprint.get('tech_stack', {})
+    
+    html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>IEEE Paper Draft - {title}</title>
+    <style>
+        body {{ font-family: 'Times New Roman', Times, serif; margin: 40px; color: #111; line-height: 1.4; }}
+        .header {{ text-align: center; margin-bottom: 30px; }}
+        h1 {{ font-size: 20pt; font-weight: bold; margin-bottom: 5px; }}
+        .subtitle {{ font-size: 11pt; font-style: italic; margin-bottom: 15px; color: #444; }}
+        .authors {{ font-size: 10pt; font-weight: bold; margin-bottom: 25px; }}
+        .two-column {{ column-count: 2; column-gap: 25px; text-align: justify; font-size: 9.5pt; }}
+        h2 {{ font-size: 10pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #000; margin-top: 15px; margin-bottom: 5px; }}
+        .abstract {{ font-weight: bold; font-size: 9pt; margin-bottom: 15px; border-left: 3px solid #333; padding-left: 10px; }}
+        pre {{ font-family: monospace; font-size: 8pt; background: #f4f4f4; padding: 8px; overflow-x: auto; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{title}</h1>
+        <div class="subtitle">{tagline}</div>
+        <div class="authors">Department of Computer Science & Engineering | Final-Year Capstone Project</div>
+    </div>
+    
+    <div class="abstract">
+        <strong>Abstract—</strong> This paper presents an end-to-end architecture for {title} in the field of {domain}. {problem} To address these challenges, we propose a modular pipeline integrating {tech.get('Backend', 'Python microservices')} and {tech.get('AI_ML', 'machine learning models')}. Experimental results demonstrate significant efficiency gains and reliable predictive accuracy under evaluator benchmarking.
+        <br><br>
+        <strong>Keywords—</strong> {domain}, Machine Learning, Distributed Microservices, Explainable AI, IEEE Manuscript.
+    </div>
+
+    <div class="two-column">
+        <h2>I. Introduction</h2>
+        <p>In modern engineering applications, addressing domain bottlenecks requires robust automated systems. {problem} Legacy manual workflows suffer from latency delays and human error. Our proposed solution bridges this gap through a high-throughput software architecture.</p>
+
+        <h2>II. System Architecture & Methodology</h2>
+        <p>The proposed framework adopts a decoupled microservice architecture. User requests are ingested via a high-performance API controller developed in {tech.get('Backend', 'Python')}. Core inferential processing is delegated to an isolated algorithm pipeline utilizing {tech.get('AI_ML', 'PyTorch / OpenCV')}.</p>
+        
+        <p>Formally, given input feature matrix <i>X &isin; &mathbb;R<sup>n &times; d</sup></i>, the model outputs confidence distribution <i>P(Y|X)</i> parameterized by weight vector &theta;:</p>
+        <p style="text-align:center;"><i>L(&theta;) = -&sum; y<sub>i</sub> log(p<sub>i</sub>) + &lambda; ||&theta;||<sup>2</sup></i></p>
+
+        <h2>III. Technology Stack Specifications</h2>
+        <p><strong>Frontend Dashboard:</strong> {tech.get('Frontend', 'HTML5 / CSS / JavaScript')}</p>
+        <p><strong>Backend Microservice:</strong> {tech.get('Backend', 'Python Flask Engine')}</p>
+        <p><strong>Database Layer:</strong> {tech.get('Database', 'JSON Persistence / SQLite')}</p>
+
+        <h2>IV. Experimental Results & Discussion</h2>
+        <p>Comparative benchmarks demonstrate sub-second latency response (< 250ms) across simulated workload scenarios. Model metrics achieve high precision and F1-score indicators during cross-validation testing.</p>
+
+        <h2>V. Conclusion & Future Work</h2>
+        <p>We have successfully implemented {title}. Future work involves deploying on edge hardware and extending model explainability using SHAP visualizations.</p>
+
+        <h2>References</h2>
+        <p>[1] J. Doe et al., "Scalable AI Pipelines in Domain Engineering," IEEE Trans. Software Eng., 2024.<br>
+        [2] A. Smith, "Explainable AI for Clinical and Enterprise Workflows," Springer CS Series, 2023.</p>
+    </div>
+</body>
+</html>"""
+    return html
+
+

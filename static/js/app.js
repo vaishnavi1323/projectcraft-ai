@@ -70,12 +70,24 @@ function initEventListeners() {
     const btnZip = document.getElementById('btn-download-scaffold');
     if (btnZip) btnZip.addEventListener('click', downloadScaffoldZip);
 
-    // Export README Button
-    document.getElementById('btn-export-readme').addEventListener('click', exportReadme);
-    document.getElementById('btn-close-readme').addEventListener('click', () => {
-        document.getElementById('readme-modal').classList.add('hidden');
+    // Export IEEE Paper Button
+    const btnIeee = document.getElementById('btn-export-ieee');
+    if (btnIeee) btnIeee.addEventListener('click', exportIeeePaper);
+    const btnCloseIeee = document.getElementById('btn-close-ieee');
+    if (btnCloseIeee) btnCloseIeee.addEventListener('click', () => {
+        document.getElementById('ieee-modal').classList.add('hidden');
     });
-    document.getElementById('btn-copy-readme').addEventListener('click', copyReadmeText);
+    const btnPrintIeee = document.getElementById('btn-print-ieee');
+    if (btnPrintIeee) btnPrintIeee.addEventListener('click', () => {
+        const iframe = document.getElementById('ieee-frame');
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+    });
+
+    // Download Dataset CSV Button
+    const btnDataset = document.getElementById('btn-download-dataset');
+    if (btnDataset) btnDataset.addEventListener('click', downloadDatasetCsv);
+
 
     // Live Viva Simulator Submit
     const btnVivaSim = document.getElementById('btn-submit-viva-sim');
@@ -598,3 +610,62 @@ function showLoading(msg = "Processing...") {
 function hideLoading() {
     document.getElementById('loading-overlay').classList.add('hidden');
 }
+
+// DOWNLOAD SYNTHETIC DATASET CSV
+async function downloadDatasetCsv() {
+    if (!currentBlueprint) {
+        alert('Please select or generate a blueprint first!');
+        return;
+    }
+
+    showLoading("Generating Domain Synthetic Dataset (.csv)...");
+    try {
+        const res = await fetch('/api/download-dataset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentBlueprint)
+        });
+        const blob = await res.blob();
+        hideLoading();
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentBlueprint.title.replace(/[^a-zA-Z0-9_]/g, '_')}_dataset.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    } catch (e) {
+        hideLoading();
+        alert('Error downloading dataset CSV.');
+    }
+}
+
+// EXPORT IEEE PAPER MANUSCRIPT
+async function exportIeeePaper() {
+    if (!currentBlueprint) {
+        alert('Please select or generate a blueprint first!');
+        return;
+    }
+
+    showLoading("Formatting IEEE 2-Column Paper Draft...");
+    try {
+        const res = await fetch('/api/export-ieee-paper', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentBlueprint)
+        });
+        const data = await res.json();
+        hideLoading();
+
+        if (data.success && data.html) {
+            const iframe = document.getElementById('ieee-frame');
+            iframe.srcdoc = data.html;
+            document.getElementById('ieee-modal').classList.remove('hidden');
+        }
+    } catch (e) {
+        hideLoading();
+        alert('Error exporting IEEE paper.');
+    }
+}
+

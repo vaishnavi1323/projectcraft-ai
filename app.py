@@ -2,11 +2,35 @@ import os
 import json
 from flask import Flask, render_template, request, jsonify, Response
 from flask_cors import CORS
-from data_engine import generate_ideas_engine, generate_blueprint_engine, generate_scaffold_zip_bytes
+from data_engine import generate_ideas_engine, generate_blueprint_engine, generate_scaffold_zip_bytes, generate_synthetic_csv, generate_ieee_paper_html
 from mentor_engine import get_mentor_advice, evaluate_viva_answer
 
 app = Flask(__name__)
 CORS(app)
+
+
+@app.route('/api/download-dataset', methods=['POST'])
+def download_dataset_api():
+    try:
+        blueprint = request.json or {}
+        csv_content, filename = generate_synthetic_csv(blueprint)
+        return Response(
+            csv_content,
+            mimetype='text/csv',
+            headers={'Content-Disposition': f'attachment; filename={filename}'}
+        )
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/export-ieee-paper', methods=['POST'])
+def export_ieee_paper_api():
+    try:
+        blueprint = request.json or {}
+        paper_html = generate_ieee_paper_html(blueprint)
+        return jsonify({'success': True, 'html': paper_html})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/viva-grade', methods=['POST'])
 def viva_grade_api():
