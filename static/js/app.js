@@ -49,11 +49,15 @@ function initEventListeners() {
     // Blueprint Tabs
     document.querySelectorAll('.bp-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
-            document.querySelectorAll('.bp-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.bp-tab').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             
             const target = e.currentTarget;
             target.classList.add('active');
+            target.setAttribute('aria-selected', 'true');
             const panelId = target.dataset.tab;
             document.getElementById(panelId).classList.add('active');
 

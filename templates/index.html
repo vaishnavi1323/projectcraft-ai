@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ProjectCraft AI - Comprehensive Final-Year Computer Science and Engineering Project Generator, System Blueprint Builder, and Viva Defense Mentor.">
     <title>ProjectCraft AI | Final-Year Project Generator & Mentor</title>
     
     <!-- Google Fonts: Syne, Space Grotesk, Inter -->
@@ -10,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 
-    
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -21,75 +21,76 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
-    <div class="bg-glow-container">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="bg-glow-container" aria-hidden="true">
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
         <div class="glow-orb orb-3"></div>
     </div>
 
     <!-- Header Navigation -->
-    <header class="navbar">
+    <header class="navbar" role="banner">
         <div class="nav-container">
             <div class="logo">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ProjectCraft AI Logo" class="brand-logo-img">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ProjectCraft AI Platform Logo" class="brand-logo-img">
                 <span class="logo-text">ProjectCraft <span class="badge-ai">AI</span></span>
             </div>
 
-            
-            <div class="nav-actions">
-                <button id="btn-header-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-file-code"></i> README</button>
-                <button id="btn-saved-projects" class="btn-secondary btn-sm">
-                    <i class="fa-solid fa-bookmark"></i> Saved Projects <span id="saved-count-badge" class="pill-count">0</span>
+            <nav class="nav-actions" aria-label="Quick Actions Navigation">
+                <button id="btn-header-readme" class="btn-secondary btn-sm" aria-label="Export README Template"><i class="fa-solid fa-file-code" aria-hidden="true"></i> README</button>
+                <button id="btn-saved-projects" class="btn-secondary btn-sm" aria-label="View Saved Projects">
+                    <i class="fa-solid fa-bookmark" aria-hidden="true"></i> Saved Projects <span id="saved-count-badge" class="pill-count" aria-label="0 saved projects">0</span>
                 </button>
-            </div>
+            </nav>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="main-content">
+    <main class="main-content" id="main-content" tabindex="-1" role="main">
         
         <!-- Hero Section -->
-        <section class="hero-section">
-            <span class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> Built for Final-Year CS & Engineering Students</span>
-            <h1 class="hero-title">Turn Your Skills Into an <span class="gradient-text">A-Grade Final-Year Project</span></h1>
+        <section class="hero-section" aria-labelledby="hero-heading">
+            <span class="hero-badge"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Built for Final-Year CS & Engineering Students</span>
+            <h1 id="hero-heading" class="hero-title">Turn Your Skills Into an <span class="gradient-text">A-Grade Final-Year Project</span></h1>
             <p class="hero-subtitle">Generate novel, feasible project ideas matched to your skills, accompanied by system architecture diagrams, 8-week roadmaps, and evaluator viva defense strategies.</p>
         </section>
 
         <!-- Progress Steps Tracker -->
-        <div class="wizard-steps">
-            <div class="step-item active" id="wizard-step-1">
-                <div class="step-circle">1</div>
+        <nav class="wizard-steps" aria-label="Project Creation Wizard Steps">
+            <div class="step-item active" id="wizard-step-1" aria-current="step">
+                <div class="step-circle" aria-hidden="true">1</div>
                 <span class="step-label">Skills & Preferences</span>
             </div>
-            <div class="step-line"></div>
+            <div class="step-line" aria-hidden="true"></div>
             <div class="step-item" id="wizard-step-2">
-                <div class="step-circle">2</div>
+                <div class="step-circle" aria-hidden="true">2</div>
                 <span class="step-label">Idea Discovery</span>
             </div>
-            <div class="step-line"></div>
+            <div class="step-line" aria-hidden="true"></div>
             <div class="step-item" id="wizard-step-3">
-                <div class="step-circle">3</div>
+                <div class="step-circle" aria-hidden="true">3</div>
                 <span class="step-label">Project Blueprint</span>
             </div>
-            <div class="step-line"></div>
+            <div class="step-line" aria-hidden="true"></div>
             <div class="step-item" id="wizard-step-4">
-                <div class="step-circle">4</div>
+                <div class="step-circle" aria-hidden="true">4</div>
                 <span class="step-label">AI Mentor Studio</span>
             </div>
-        </div>
+        </nav>
 
         <!-- STEP 1: INPUT FORM CONTAINER -->
-        <div id="section-step-1" class="step-content glass-card">
+        <section id="section-step-1" class="step-content glass-card" aria-labelledby="step1-heading">
             <div class="card-header">
-                <h2><i class="fa-solid fa-sliders text-gradient"></i> Configure Your Profile & Preferences</h2>
+                <h2 id="step1-heading"><i class="fa-solid fa-sliders text-gradient" aria-hidden="true"></i> Configure Your Profile & Preferences</h2>
                 <p>Provide your target domain and skill set to get personalized concepts.</p>
             </div>
 
             <form id="generator-form" class="form-grid">
                 <!-- Domain Selection -->
                 <div class="form-group">
-                    <label for="domain-select"><i class="fa-solid fa-layer-group"></i> Target Domain / Industry</label>
-                    <select id="domain-select" class="form-input">
+                    <label for="domain-select"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Target Domain / Industry</label>
+                    <select id="domain-select" class="form-input" required aria-required="true">
                         <option value="Healthcare" selected>Healthcare & Telemedicine</option>
                         <option value="FinTech">FinTech & Fraud Detection</option>
                         <option value="Sustainability">Sustainability & Clean Tech</option>
@@ -101,8 +102,8 @@
 
                 <!-- Category -->
                 <div class="form-group">
-                    <label for="category-select"><i class="fa-solid fa-laptop-code"></i> Project Type / Category</label>
-                    <select id="category-select" class="form-input">
+                    <label for="category-select"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i> Project Type / Category</label>
+                    <select id="category-select" class="form-input" required aria-required="true">
                         <option value="AI/ML Model & Web App" selected>AI/ML Model + Web Dashboard</option>
                         <option value="Full-Stack Web Application">Full-Stack Web Application</option>
                         <option value="Mobile App (iOS/Android)">Mobile App (iOS/Android)</option>
@@ -113,23 +114,23 @@
 
                 <!-- Tech Skills Inputs -->
                 <div class="form-group col-span-2">
-                    <label for="skills-input"><i class="fa-solid fa-code"></i> Your Known Skills & Preferred Tech Stack (comma separated)</label>
-                    <input type="text" id="skills-input" class="form-input" value="Python, React, PyTorch, SQL, Tailwind" placeholder="e.g. Python, React, PyTorch, Flutter, Node.js, OpenCV">
-                    <div class="skills-chips" id="suggested-chips">
-                        <span class="chip-btn" data-skill="Python"><i class="fa-brands fa-python"></i> Python</span>
-                        <span class="chip-btn" data-skill="React"><i class="fa-brands fa-react"></i> React</span>
-                        <span class="chip-btn" data-skill="PyTorch"><i class="fa-solid fa-brain"></i> PyTorch</span>
-                        <span class="chip-btn" data-skill="OpenCV"><i class="fa-solid fa-eye"></i> OpenCV</span>
-                        <span class="chip-btn" data-skill="Flutter"><i class="fa-solid fa-mobile-screen"></i> Flutter</span>
-                        <span class="chip-btn" data-skill="FastAPI"><i class="fa-solid fa-bolt"></i> FastAPI</span>
-                        <span class="chip-btn" data-skill="Docker"><i class="fa-brands fa-docker"></i> Docker</span>
+                    <label for="skills-input"><i class="fa-solid fa-code" aria-hidden="true"></i> Your Known Skills & Preferred Tech Stack (comma separated)</label>
+                    <input type="text" id="skills-input" class="form-input" value="Python, React, PyTorch, SQL, Tailwind" placeholder="e.g. Python, React, PyTorch, Flutter, Node.js, OpenCV" required aria-required="true">
+                    <div class="skills-chips" id="suggested-chips" aria-label="Suggested Tech Skills Quick Selection">
+                        <button type="button" class="chip-btn" data-skill="Python" aria-label="Add Python skill"><i class="fa-brands fa-python" aria-hidden="true"></i> Python</button>
+                        <button type="button" class="chip-btn" data-skill="React" aria-label="Add React skill"><i class="fa-brands fa-react" aria-hidden="true"></i> React</button>
+                        <button type="button" class="chip-btn" data-skill="PyTorch" aria-label="Add PyTorch skill"><i class="fa-solid fa-brain" aria-hidden="true"></i> PyTorch</button>
+                        <button type="button" class="chip-btn" data-skill="OpenCV" aria-label="Add OpenCV skill"><i class="fa-solid fa-eye" aria-hidden="true"></i> OpenCV</button>
+                        <button type="button" class="chip-btn" data-skill="Flutter" aria-label="Add Flutter skill"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i> Flutter</button>
+                        <button type="button" class="chip-btn" data-skill="FastAPI" aria-label="Add FastAPI skill"><i class="fa-solid fa-bolt" aria-hidden="true"></i> FastAPI</button>
+                        <button type="button" class="chip-btn" data-skill="Docker" aria-label="Add Docker skill"><i class="fa-brands fa-docker" aria-hidden="true"></i> Docker</button>
                     </div>
                 </div>
 
                 <!-- Complexity & Difficulty -->
                 <div class="form-group">
-                    <label for="difficulty-select"><i class="fa-solid fa-gauge-high"></i> Project Complexity Level</label>
-                    <select id="difficulty-select" class="form-input">
+                    <label for="difficulty-select"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Project Complexity Level</label>
+                    <select id="difficulty-select" class="form-input" required aria-required="true">
                         <option value="Beginner">Intermediate (Standard Final-Year Level)</option>
                         <option value="Intermediate" selected>Advanced (IEEE Standard / High Score)</option>
                         <option value="Advanced (Research-grade)">Research-Grade (Publication & Patent Track)</option>
@@ -138,8 +139,8 @@
 
                 <!-- Primary Goal -->
                 <div class="form-group">
-                    <label for="goal-select"><i class="fa-solid fa-bullseye"></i> Primary Goal for Project</label>
-                    <select id="goal-select" class="form-input">
+                    <label for="goal-select"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Primary Goal for Project</label>
+                    <select id="goal-select" class="form-input" required aria-required="true">
                         <option value="Job Portfolio & Resumes" selected>Resume Highlight / Job Ready</option>
                         <option value="Research Paper / Patent">IEEE Research Paper / Patent</option>
                         <option value="Hackathon Winner">Hackathon Winner / Best Prototype</option>
@@ -149,30 +150,30 @@
 
                 <!-- Submit Button -->
                 <div class="form-actions col-span-2">
-                    <button type="submit" class="btn-primary btn-lg" id="btn-generate">
-                        <i class="fa-solid fa-sparkles"></i> Generate AI Project Ideas
+                    <button type="submit" class="btn-primary btn-lg" id="btn-generate" aria-label="Generate AI Project Ideas">
+                        <i class="fa-solid fa-sparkles" aria-hidden="true"></i> Generate AI Project Ideas
                     </button>
                 </div>
             </form>
-        </div>
+        </section>
 
         <!-- STEP 2: IDEA CARDS CONTAINER (Hidden Initially) -->
-        <div id="section-step-2" class="step-content hidden">
+        <section id="section-step-2" class="step-content hidden" aria-labelledby="step2-heading">
             <div class="section-header">
                 <div>
-                    <h2><i class="fa-solid fa-lightbulb text-amber"></i> Generated Project Concepts</h2>
+                    <h2 id="step2-heading"><i class="fa-solid fa-lightbulb text-amber" aria-hidden="true"></i> Generated Project Concepts</h2>
                     <p>Select your favorite concept to unlock its technical blueprint and execution plan.</p>
                 </div>
-                <button class="btn-secondary btn-sm" id="btn-back-step1"><i class="fa-solid fa-arrow-left"></i> Edit Skills</button>
+                <button class="btn-secondary btn-sm" id="btn-back-step1" aria-label="Back to Edit Profile and Skills"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Edit Skills</button>
             </div>
 
-            <div class="ideas-grid" id="ideas-container">
+            <div class="ideas-grid" id="ideas-container" role="region" aria-label="Generated Project Ideas Cards">
                 <!-- Dynamically Populated by JS -->
             </div>
-        </div>
+        </section>
 
         <!-- STEP 3: BLUEPRINT STUDIO (Hidden Initially) -->
-        <div id="section-step-3" class="step-content hidden">
+        <section id="section-step-3" class="step-content hidden" aria-label="Project Blueprint Studio">
             <div class="blueprint-header glass-card">
                 <div class="blueprint-title-area">
                     <span id="bp-domain-tag" class="tag-badge">Healthcare</span>
@@ -180,66 +181,65 @@
                     <p id="bp-tagline" class="text-muted">Multi-modal AI assistant for early disease screening and clinical triage in rural clinics</p>
                 </div>
                 <div class="blueprint-actions">
-                    <button id="btn-download-scaffold" class="btn-accent btn-sm"><i class="fa-solid fa-file-zipper"></i> Download Code (.zip)</button>
-                    <button id="btn-export-ieee" class="btn-primary btn-sm" style="background: linear-gradient(135deg, var(--neon-purple), #7928CA);"><i class="fa-solid fa-file-pdf"></i> IEEE Paper Draft</button>
-                    <button id="btn-save-bp" class="btn-secondary btn-sm"><i class="fa-solid fa-bookmark"></i> Save Project</button>
-                    <button id="btn-export-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-file-code"></i> Export README.md</button>
-                    <button id="btn-goto-mentor" class="btn-secondary btn-sm"><i class="fa-solid fa-robot"></i> Open AI Mentor Studio</button>
+                    <button id="btn-download-scaffold" class="btn-accent btn-sm" aria-label="Download Code Scaffold Zip"><i class="fa-solid fa-file-zipper" aria-hidden="true"></i> Download Code (.zip)</button>
+                    <button id="btn-export-ieee" class="btn-primary btn-sm" style="background: linear-gradient(135deg, var(--neon-purple), #7928CA);" aria-label="Export IEEE Conference Paper Draft"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> IEEE Paper Draft</button>
+                    <button id="btn-save-bp" class="btn-secondary btn-sm" aria-label="Save Project Blueprint"><i class="fa-solid fa-bookmark" aria-hidden="true"></i> Save Project</button>
+                    <button id="btn-export-readme" class="btn-secondary btn-sm" aria-label="Export GitHub README Markdown"><i class="fa-solid fa-file-code" aria-hidden="true"></i> Export README.md</button>
+                    <button id="btn-goto-mentor" class="btn-secondary btn-sm" aria-label="Open AI Mentor Studio"><i class="fa-solid fa-robot" aria-hidden="true"></i> Open AI Mentor Studio</button>
                 </div>
             </div>
 
             <!-- Blueprint Tabs -->
-            <div class="bp-tabs">
-                <button class="bp-tab active" data-tab="tab-architecture"><i class="fa-solid fa-diagram-project"></i> Architecture Diagram</button>
-                <button class="bp-tab" data-tab="tab-tech"><i class="fa-solid fa-layer-group"></i> Tech Stack & Specs</button>
-                <button class="bp-tab" data-tab="tab-roadmap"><i class="fa-solid fa-calendar-check"></i> 8-Week Execution Roadmap</button>
-                <button class="bp-tab" data-tab="tab-viva"><i class="fa-solid fa-shield-halved"></i> Evaluator Viva Defense Q&A</button>
-                <button class="bp-tab" data-tab="tab-tracker"><i class="fa-solid fa-chart-pie"></i> Completion & Technical Radar</button>
+            <div class="bp-tabs" role="tablist" aria-label="Project Blueprint Sections">
+                <button class="bp-tab active" data-tab="tab-architecture" id="tab-btn-architecture" role="tab" aria-selected="true" aria-controls="tab-architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Architecture Diagram</button>
+                <button class="bp-tab" data-tab="tab-tech" id="tab-btn-tech" role="tab" aria-selected="false" aria-controls="tab-tech"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Tech Stack & Specs</button>
+                <button class="bp-tab" data-tab="tab-roadmap" id="tab-btn-roadmap" role="tab" aria-selected="false" aria-controls="tab-roadmap"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> 8-Week Execution Roadmap</button>
+                <button class="bp-tab" data-tab="tab-viva" id="tab-btn-viva" role="tab" aria-selected="false" aria-controls="tab-viva"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Evaluator Viva Defense Q&A</button>
+                <button class="bp-tab" data-tab="tab-tracker" id="tab-btn-tracker" role="tab" aria-selected="false" aria-controls="tab-tracker"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Completion & Technical Radar</button>
             </div>
 
             <!-- Tab 1: Architecture -->
-            <div id="tab-architecture" class="tab-panel glass-card active">
-                <h3><i class="fa-solid fa-sitemap text-cyan"></i> System Dataflow & Modular Architecture</h3>
+            <div id="tab-architecture" class="tab-panel glass-card active" role="tabpanel" aria-labelledby="tab-btn-architecture" tabindex="0">
+                <h3><i class="fa-solid fa-sitemap text-cyan" aria-hidden="true"></i> System Dataflow & Modular Architecture</h3>
                 <p>Interactive Mermaid.js structural model designed for final-year report submission.</p>
                 
-                <div class="mermaid-box" id="mermaid-container">
+                <div class="mermaid-box" id="mermaid-container" aria-label="System Dataflow Diagram Container">
                     <pre class="mermaid" id="mermaid-target">
                     </pre>
                 </div>
                 
                 <div class="problem-box">
-                    <h4><i class="fa-solid fa-circle-exclamation text-amber"></i> Target Problem & Solution</h4>
+                    <h4><i class="fa-solid fa-circle-exclamation text-amber" aria-hidden="true"></i> Target Problem & Solution</h4>
                     <p id="bp-problem-statement">---</p>
                 </div>
             </div>
 
             <!-- Tab 2: Tech Stack -->
-            <div id="tab-tech" class="tab-panel glass-card">
+            <div id="tab-tech" class="tab-panel glass-card" role="tabpanel" aria-labelledby="tab-btn-tech" tabindex="0">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3><i class="fa-solid fa-microchip text-violet"></i> Technology Stack & Resource Requirements</h3>
-                    <button id="btn-download-dataset" class="btn-accent btn-sm"><i class="fa-solid fa-table"></i> Download Sample Dataset (.csv)</button>
+                    <h3><i class="fa-solid fa-microchip text-violet" aria-hidden="true"></i> Technology Stack & Resource Requirements</h3>
+                    <button id="btn-download-dataset" class="btn-accent btn-sm" aria-label="Download Sample Dataset CSV"><i class="fa-solid fa-table" aria-hidden="true"></i> Download Sample Dataset (.csv)</button>
                 </div>
                 
                 <div class="tech-grid" id="tech-stack-container">
                     <!-- Populated dynamically -->
                 </div>
 
-
                 <div class="requirements-box">
                     <div class="req-card">
-                        <h4><i class="fa-solid fa-laptop"></i> Hardware Specs</h4>
+                        <h4><i class="fa-solid fa-laptop" aria-hidden="true"></i> Hardware Specs</h4>
                         <p id="req-hardware">Standard PC / Laptop</p>
                     </div>
                     <div class="req-card">
-                        <h4><i class="fa-solid fa-terminal"></i> Software Environment</h4>
+                        <h4><i class="fa-solid fa-terminal" aria-hidden="true"></i> Software Environment</h4>
                         <p id="req-software">Python 3.10+, VS Code</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tab 3: Roadmap -->
-            <div id="tab-roadmap" class="tab-panel glass-card">
-                <h3><i class="fa-solid fa-timeline text-emerald"></i> 8-Week Step-by-Step Implementation Roadmap</h3>
+            <div id="tab-roadmap" class="tab-panel glass-card" role="tabpanel" aria-labelledby="tab-btn-roadmap" tabindex="0">
+                <h3><i class="fa-solid fa-timeline text-emerald" aria-hidden="true"></i> 8-Week Step-by-Step Implementation Roadmap</h3>
                 <p>Check off milestones as you complete your final-year development phases.</p>
                 
                 <div class="roadmap-timeline" id="roadmap-container">
@@ -248,30 +248,30 @@
             </div>
 
             <!-- Tab 4: Viva Prep -->
-            <div id="tab-viva" class="tab-panel glass-card">
+            <div id="tab-viva" class="tab-panel glass-card" role="tabpanel" aria-labelledby="tab-btn-viva" tabindex="0">
                 <!-- LIVE VIVA SIMULATOR CARD -->
                 <div class="viva-simulator-card glass-card" style="margin-bottom: 2rem; border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.05);">
-                    <h3 style="color: var(--accent-rose); margin-bottom: 0.25rem;"><i class="fa-solid fa-gamepad"></i> Live Viva Voce Simulator & AI Examiner</h3>
+                    <h3 style="color: var(--accent-rose); margin-bottom: 0.25rem;"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> Live Viva Voce Simulator & AI Examiner</h3>
                     <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.25rem;">Practice defending your project live! Type your response to get graded out of 10 and see missing technical keywords.</p>
                     
                     <div class="form-group" style="margin-bottom: 1rem;">
-                        <label style="color: white; font-weight: 600;">Select Examiner Question to Practice:</label>
-                        <select id="viva-sim-q-select" class="form-input"></select>
+                        <label for="viva-sim-q-select" style="color: white; font-weight: 600;">Select Examiner Question to Practice:</label>
+                        <select id="viva-sim-q-select" class="form-input" aria-label="Select Examiner Question to Practice"></select>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 1rem;">
-                        <label style="color: white; font-weight: 600;">Your Defense Answer:</label>
+                        <label for="viva-sim-answer" style="color: white; font-weight: 600;">Your Defense Answer:</label>
                         <textarea id="viva-sim-answer" class="form-input" rows="3" placeholder="e.g. We chose Python for rapid ML iteration and decoupled backend REST microservices..."></textarea>
                     </div>
 
-                    <button id="btn-submit-viva-sim" class="btn-primary btn-sm" style="background: linear-gradient(135deg, var(--accent-rose), #E11D48);"><i class="fa-solid fa-graduation-cap"></i> Grade My Defense</button>
+                    <button id="btn-submit-viva-sim" class="btn-primary btn-sm" style="background: linear-gradient(135deg, var(--accent-rose), #E11D48);" aria-label="Grade My Viva Defense Answer"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Grade My Defense</button>
 
-                    <div id="viva-sim-result" class="hidden" style="margin-top: 1.25rem; background: rgba(10, 15, 26, 0.85); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);">
+                    <div id="viva-sim-result" class="hidden" style="margin-top: 1.25rem; background: rgba(10, 15, 26, 0.85); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md);" role="region" aria-label="Viva Practice Results">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
 
-                <h3><i class="fa-solid fa-shield-halved text-rose"></i> Anticipated Evaluator Defense Cheat Sheet</h3>
+                <h3><i class="fa-solid fa-shield-halved text-rose" aria-hidden="true"></i> Anticipated Evaluator Defense Cheat Sheet</h3>
                 <p>Anticipated questions external examiners will ask and master responses to secure high marks.</p>
 
                 <div class="viva-grid" id="viva-container">
@@ -280,18 +280,18 @@
             </div>
 
             <!-- Tab 5: Completion & Technical Radar -->
-            <div id="tab-tracker" class="tab-panel glass-card">
-                <h3><i class="fa-solid fa-chart-pie text-cyan"></i> Capstone Completion & Technical Radar Analytics</h3>
+            <div id="tab-tracker" class="tab-panel glass-card" role="tabpanel" aria-labelledby="tab-btn-tracker" tabindex="0">
+                <h3><i class="fa-solid fa-chart-pie text-cyan" aria-hidden="true"></i> Capstone Completion & Technical Radar Analytics</h3>
                 <p class="text-muted" style="margin-bottom: 1.5rem;">Real-time progress gauge and 5-axis technical depth spider graph for project evaluations.</p>
                 
                 <div class="tracker-panel-grid">
                     <!-- Radial Gauge & Pillars Box -->
                     <div class="tracker-card">
                         <h4 style="font-family: var(--font-heading); color: white; display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fa-solid fa-circle-notch text-cyan"></i> Submission Readiness Score
+                            <i class="fa-solid fa-circle-notch text-cyan" aria-hidden="true"></i> Submission Readiness Score
                         </h4>
                         <div class="gauge-center-wrapper">
-                            <svg class="radial-svg" width="160" height="160" viewBox="0 0 160 160">
+                            <svg class="radial-svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Submission Readiness Score Gauge 85%">
                                 <defs>
                                     <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" stop-color="var(--neon-purple)" />
@@ -353,11 +353,11 @@
                     <!-- SVG Technical Radar Box -->
                     <div class="tracker-card">
                         <h4 style="font-family: var(--font-heading); color: white; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                            <i class="fa-solid fa-spider text-violet"></i> Technical Depth Radar Chart
+                            <i class="fa-solid fa-spider text-violet" aria-hidden="true"></i> Technical Depth Radar Chart
                         </h4>
 
                         <div class="radar-svg-box">
-                            <svg width="300" height="260" viewBox="0 0 300 260">
+                            <svg width="300" height="260" viewBox="0 0 300 260" role="img" aria-label="Technical Depth Radar Chart comparing Complexity, Data Scale, Novelty, UI, and Feasibility">
                                 <!-- Grid Background Polygons -->
                                 <polygon class="radar-polygon-grid" points="150,30 245,99 209,211 91,211 55,99"></polygon>
                                 <polygon class="radar-polygon-grid" points="150,60 221,112 194,196 106,196 79,112"></polygon>
@@ -390,58 +390,58 @@
                         </div>
 
                         <div style="background: rgba(0, 245, 212, 0.06); border: 1px solid rgba(0, 245, 212, 0.2); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.82rem; color: #E2E8F0; margin-top: 0.5rem;">
-                            <strong class="text-cyan"><i class="fa-solid fa-lightbulb"></i> Evaluator Insight:</strong> High scores in IEEE Research Novelty and Hardware Feasibility make this capstone an ideal candidate for A+ distinction and conference publication.
+                            <strong class="text-cyan"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Evaluator Insight:</strong> High scores in IEEE Research Novelty and Hardware Feasibility make this capstone an ideal candidate for A+ distinction and conference publication.
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
+        </section>
 
         <!-- STEP 4: AI MENTOR STUDIO (Hidden Initially) -->
-        <div id="section-step-4" class="step-content hidden">
+        <section id="section-step-4" class="step-content hidden" aria-labelledby="step4-heading">
             <div class="section-header">
                 <div>
-                    <h2><i class="fa-solid fa-robot text-purple"></i> AI Project Mentor Studio</h2>
+                    <h2 id="step4-heading"><i class="fa-solid fa-robot text-purple" aria-hidden="true"></i> AI Project Mentor Studio</h2>
                     <p>Get instant expert strategies for research paper publication, low-compute workarounds, and resume bullets.</p>
                 </div>
-                <button class="btn-secondary btn-sm" id="btn-back-blueprint"><i class="fa-solid fa-arrow-left"></i> Back to Blueprint</button>
+                <button class="btn-secondary btn-sm" id="btn-back-blueprint" aria-label="Back to Project Blueprint Studio"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Blueprint</button>
             </div>
 
             <div class="mentor-layout">
                 <!-- Left Sidebar Prompts -->
                 <div class="mentor-sidebar glass-card">
                     <h3>Select Mentorship Topic</h3>
-                    <div class="prompt-chips">
-                        <button class="prompt-btn active" data-prompt="viva_prep">
-                            <i class="fa-solid fa-shield-halved text-rose"></i>
+                    <div class="prompt-chips" role="tablist" aria-label="Mentorship Topics">
+                        <button class="prompt-btn active" data-prompt="viva_prep" aria-label="Evaluator Viva Defense topic">
+                            <i class="fa-solid fa-shield-halved text-rose" aria-hidden="true"></i>
                             <span>Evaluator Viva Defense</span>
                         </button>
-                        <button class="prompt-btn" data-prompt="research_upgrade">
-                            <i class="fa-solid fa-award text-amber"></i>
+                        <button class="prompt-btn" data-prompt="research_upgrade" aria-label="IEEE Paper / Research Upgrade topic">
+                            <i class="fa-solid fa-award text-amber" aria-hidden="true"></i>
                             <span>IEEE Paper / Research Upgrade</span>
                         </button>
-                        <button class="prompt-btn" data-prompt="constraint_solver">
-                            <i class="fa-solid fa-bolt text-cyan"></i>
+                        <button class="prompt-btn" data-prompt="constraint_solver" aria-label="Compute & Data Constraints topic">
+                            <i class="fa-solid fa-bolt text-cyan" aria-hidden="true"></i>
                             <span>Compute & Data Constraints</span>
                         </button>
-                        <button class="prompt-btn" data-prompt="resume_booster">
-                            <i class="fa-solid fa-file-invoice text-emerald"></i>
+                        <button class="prompt-btn" data-prompt="resume_booster" aria-label="GitHub & Resume Impact Bullets topic">
+                            <i class="fa-solid fa-file-invoice text-emerald" aria-hidden="true"></i>
                             <span>GitHub & Resume Impact Bullets</span>
                         </button>
                     </div>
 
                     <div class="custom-prompt-box">
                         <label for="custom-mentor-input">Ask Custom Question</label>
-                        <textarea id="custom-mentor-input" rows="3" placeholder="e.g. How do I deploy this model on a Raspberry Pi without latency?"></textarea>
-                        <button id="btn-ask-custom" class="btn-accent btn-sm"><i class="fa-solid fa-paper-plane"></i> Ask Mentor</button>
+                        <textarea id="custom-mentor-input" rows="3" placeholder="e.g. How do I deploy this model on a Raspberry Pi without latency?" aria-label="Ask Custom Question to AI Mentor"></textarea>
+                        <button id="btn-ask-custom" class="btn-accent btn-sm" aria-label="Submit Custom Question"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Ask Mentor</button>
                     </div>
                 </div>
 
                 <!-- Right Response Panel -->
-                <div class="mentor-output glass-card" id="mentor-output-container">
+                <div class="mentor-output glass-card" id="mentor-output-container" role="region" aria-label="AI Mentor Advice Output">
                     <div class="mentor-welcome" id="mentor-welcome-state">
-                        <i class="fa-solid fa-brain-circuit mentor-big-icon"></i>
+                        <i class="fa-solid fa-brain-circuit mentor-big-icon" aria-hidden="true"></i>
                         <h3>Your AI Mentor is Ready</h3>
                         <p>Click any topic on the left to receive custom strategy steps for your project.</p>
                     </div>
@@ -451,16 +451,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
     </main>
 
     <!-- SAVED PROJECTS MODAL -->
-    <div id="saved-modal" class="modal-backdrop hidden">
+    <div id="saved-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="saved-modal-title">
         <div class="modal-box glass-card">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-bookmark text-violet"></i> Your Saved Project Blueprints</h2>
-                <button id="btn-close-saved" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="saved-modal-title"><i class="fa-solid fa-bookmark text-violet" aria-hidden="true"></i> Your Saved Project Blueprints</h2>
+                <button id="btn-close-saved" class="btn-icon" aria-label="Close saved projects modal"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body" id="saved-modal-body">
                 <!-- Dynamically populated -->
@@ -469,44 +469,44 @@
     </div>
 
     <!-- EXPORT README MODAL -->
-    <div id="readme-modal" class="modal-backdrop hidden">
+    <div id="readme-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="readme-modal-title">
         <div class="modal-box glass-card modal-lg">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-file-code text-cyan"></i> Export GitHub README.md</h2>
-                <button id="btn-close-readme" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="readme-modal-title"><i class="fa-solid fa-file-code text-cyan" aria-hidden="true"></i> Export GitHub README.md</h2>
+                <button id="btn-close-readme" class="btn-icon" aria-label="Close README modal"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <div class="code-header">
                     <span>README.md Preview</span>
                     <div style="display: flex; gap: 0.5rem;">
-                        <button id="btn-copy-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-copy"></i> Copy Markdown</button>
-                        <button id="btn-download-readme-file" class="btn-primary btn-sm"><i class="fa-solid fa-download"></i> Download README.md</button>
+                        <button id="btn-copy-readme" class="btn-secondary btn-sm" aria-label="Copy Markdown to Clipboard"><i class="fa-solid fa-copy" aria-hidden="true"></i> Copy Markdown</button>
+                        <button id="btn-download-readme-file" class="btn-primary btn-sm" aria-label="Download README.md File"><i class="fa-solid fa-download" aria-hidden="true"></i> Download README.md</button>
                     </div>
                 </div>
-                <textarea id="readme-text-area" readonly class="code-textarea"></textarea>
+                <textarea id="readme-text-area" readonly class="code-textarea" aria-label="README markdown source content"></textarea>
             </div>
         </div>
     </div>
+
     <!-- EXPORT IEEE PAPER MODAL -->
-    <div id="ieee-modal" class="modal-backdrop hidden">
+    <div id="ieee-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="ieee-modal-title">
         <div class="modal-box glass-card modal-lg">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-file-pdf text-purple"></i> IEEE 2-Column Conference Paper Draft</h2>
-                <button id="btn-close-ieee" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="ieee-modal-title"><i class="fa-solid fa-file-pdf text-purple" aria-hidden="true"></i> IEEE 2-Column Conference Paper Draft</h2>
+                <button id="btn-close-ieee" class="btn-icon" aria-label="Close IEEE paper modal"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <div class="code-header">
                     <span>Manuscript Preview</span>
-                    <button id="btn-print-ieee" class="btn-primary btn-sm"><i class="fa-solid fa-print"></i> Print / Save PDF</button>
+                    <button id="btn-print-ieee" class="btn-primary btn-sm" aria-label="Print or Save IEEE Paper as PDF"><i class="fa-solid fa-print" aria-hidden="true"></i> Print / Save PDF</button>
                 </div>
-                <iframe id="ieee-frame" style="width: 100%; height: 450px; border: 1px solid var(--border-artistic); border-radius: var(--radius-md); background: white;"></iframe>
+                <iframe id="ieee-frame" title="IEEE Conference Paper Preview" style="width: 100%; height: 450px; border: 1px solid var(--border-artistic); border-radius: var(--radius-md); background: white;"></iframe>
             </div>
         </div>
     </div>
 
-
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay hidden">
+    <div id="loading-overlay" class="loading-overlay hidden" role="status" aria-live="polite">
         <div class="spinner-box">
             <div class="spinner"></div>
             <p id="loading-text">Synthesizing Project Concepts...</p>

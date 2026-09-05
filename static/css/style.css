@@ -1114,3 +1114,30 @@ body {
     .tracker-panel-grid { grid-template-columns: 1fr; }
 }
 
+/* ACCESSIBILITY & KEYBOARD FOCUS COMPLIANCE (WCAG 2.1 AA) */
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: 10px;
+    background: var(--neon-purple);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    z-index: 1000;
+    font-weight: 700;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 10px;
+}
+
+:focus-visible {
+    outline: 2px solid var(--neon-cyan) !important;
+    outline-offset: 3px !important;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.4) !important;
+}
+
