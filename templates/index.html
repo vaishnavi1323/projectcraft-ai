@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectCraft AI | Final-Year Project Generator & Mentor</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Mermaid.js for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <div class="bg-glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <span class="logo-text">ProjectCraft <span class="badge-ai">AI</span></span>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="btn-saved-projects" class="btn-secondary btn-sm">
+                    <i class="fa-solid fa-bookmark"></i> Saved Projects <span id="saved-count-badge" class="pill-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <span class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> Built for Final-Year CS & Engineering Students</span>
+            <h1 class="hero-title">Turn Your Skills Into an <span class="gradient-text">A-Grade Final-Year Project</span></h1>
+            <p class="hero-subtitle">Generate novel, feasible project ideas matched to your skills, accompanied by system architecture diagrams, 8-week roadmaps, and evaluator viva defense strategies.</p>
+        </section>
+
+        <!-- Progress Steps Tracker -->
+        <div class="wizard-steps">
+            <div class="step-item active" id="wizard-step-1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Skills & Preferences</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item" id="wizard-step-2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Idea Discovery</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item" id="wizard-step-3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Project Blueprint</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item" id="wizard-step-4">
+                <div class="step-circle">4</div>
+                <span class="step-label">AI Mentor Studio</span>
+            </div>
+        </div>
+
+        <!-- STEP 1: INPUT FORM CONTAINER -->
+        <div id="section-step-1" class="step-content glass-card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-sliders text-gradient"></i> Configure Your Profile & Preferences</h2>
+                <p>Provide your target domain and skill set to get personalized concepts.</p>
+            </div>
+
+            <form id="generator-form" class="form-grid">
+                <!-- Domain Selection -->
+                <div class="form-group">
+                    <label for="domain-select"><i class="fa-solid fa-layer-group"></i> Target Domain / Industry</label>
+                    <select id="domain-select" class="form-input">
+                        <option value="Healthcare" selected>Healthcare & Telemedicine</option>
+                        <option value="FinTech">FinTech & Fraud Detection</option>
+                        <option value="Sustainability">Sustainability & Clean Tech</option>
+                        <option value="EdTech">EdTech & Adaptive Learning</option>
+                        <option value="Smart Cities & IoT">Smart Cities, IoT & Transportation</option>
+                        <option value="Cybersecurity">Cybersecurity & Privacy</option>
+                    </select>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category-select"><i class="fa-solid fa-laptop-code"></i> Project Type / Category</label>
+                    <select id="category-select" class="form-input">
+                        <option value="AI/ML Model & Web App" selected>AI/ML Model + Web Dashboard</option>
+                        <option value="Full-Stack Web Application">Full-Stack Web Application</option>
+                        <option value="Mobile App (iOS/Android)">Mobile App (iOS/Android)</option>
+                        <option value="IoT & Hardware Embedded">IoT & Embedded Hardware</option>
+                        <option value="Blockchain & Cryptographic Protocol">Blockchain & Smart Contracts</option>
+                    </select>
+                </div>
+
+                <!-- Tech Skills Inputs -->
+                <div class="form-group col-span-2">
+                    <label for="skills-input"><i class="fa-solid fa-code"></i> Your Known Skills & Preferred Tech Stack (comma separated)</label>
+                    <input type="text" id="skills-input" class="form-input" value="Python, React, PyTorch, SQL, Tailwind" placeholder="e.g. Python, React, PyTorch, Flutter, Node.js, OpenCV">
+                    <div class="skills-chips" id="suggested-chips">
+                        <span class="chip-btn" data-skill="Python"><i class="fa-brands fa-python"></i> Python</span>
+                        <span class="chip-btn" data-skill="React"><i class="fa-brands fa-react"></i> React</span>
+                        <span class="chip-btn" data-skill="PyTorch"><i class="fa-solid fa-brain"></i> PyTorch</span>
+                        <span class="chip-btn" data-skill="OpenCV"><i class="fa-solid fa-eye"></i> OpenCV</span>
+                        <span class="chip-btn" data-skill="Flutter"><i class="fa-solid fa-mobile-screen"></i> Flutter</span>
+                        <span class="chip-btn" data-skill="FastAPI"><i class="fa-solid fa-bolt"></i> FastAPI</span>
+                        <span class="chip-btn" data-skill="Docker"><i class="fa-brands fa-docker"></i> Docker</span>
+                    </div>
+                </div>
+
+                <!-- Complexity & Difficulty -->
+                <div class="form-group">
+                    <label for="difficulty-select"><i class="fa-solid fa-gauge-high"></i> Project Complexity Level</label>
+                    <select id="difficulty-select" class="form-input">
+                        <option value="Beginner">Intermediate (Standard Final-Year Level)</option>
+                        <option value="Intermediate" selected>Advanced (IEEE Standard / High Score)</option>
+                        <option value="Advanced (Research-grade)">Research-Grade (Publication & Patent Track)</option>
+                    </select>
+                </div>
+
+                <!-- Primary Goal -->
+                <div class="form-group">
+                    <label for="goal-select"><i class="fa-solid fa-bullseye"></i> Primary Goal for Project</label>
+                    <select id="goal-select" class="form-input">
+                        <option value="Job Portfolio & Resumes" selected>Resume Highlight / Job Ready</option>
+                        <option value="Research Paper / Patent">IEEE Research Paper / Patent</option>
+                        <option value="Hackathon Winner">Hackathon Winner / Best Prototype</option>
+                        <option value="Startup MVP">Commercial Startup MVP</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions col-span-2">
+                    <button type="submit" class="btn-primary btn-lg" id="btn-generate">
+                        <i class="fa-solid fa-sparkles"></i> Generate AI Project Ideas
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 2: IDEA CARDS CONTAINER (Hidden Initially) -->
+        <div id="section-step-2" class="step-content hidden">
+            <div class="section-header">
+                <div>
+                    <h2><i class="fa-solid fa-lightbulb text-amber"></i> Generated Project Concepts</h2>
+                    <p>Select your favorite concept to unlock its technical blueprint and execution plan.</p>
+                </div>
+                <button class="btn-secondary btn-sm" id="btn-back-step1"><i class="fa-solid fa-arrow-left"></i> Edit Skills</button>
+            </div>
+
+            <div class="ideas-grid" id="ideas-container">
+                <!-- Dynamically Populated by JS -->
+            </div>
+        </div>
+
+        <!-- STEP 3: BLUEPRINT STUDIO (Hidden Initially) -->
+        <div id="section-step-3" class="step-content hidden">
+            <div class="blueprint-header glass-card">
+                <div class="blueprint-title-area">
+                    <span id="bp-domain-tag" class="tag-badge">Healthcare</span>
+                    <h1 id="bp-title">MediVision AI Diagnostic Engine</h1>
+                    <p id="bp-tagline" class="text-muted">Multi-modal AI assistant for early disease screening and clinical triage in rural clinics</p>
+                </div>
+                <div class="blueprint-actions">
+                    <button id="btn-save-bp" class="btn-primary btn-sm"><i class="fa-solid fa-bookmark"></i> Save Project</button>
+                    <button id="btn-export-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-file-code"></i> Export README.md</button>
+                    <button id="btn-goto-mentor" class="btn-accent btn-sm"><i class="fa-solid fa-robot"></i> Open AI Mentor Studio</button>
+                </div>
+            </div>
+
+            <!-- Blueprint Tabs -->
+            <div class="bp-tabs">
+                <button class="bp-tab active" data-tab="tab-architecture"><i class="fa-solid fa-diagram-project"></i> Architecture Diagram</button>
+                <button class="bp-tab" data-tab="tab-tech"><i class="fa-solid fa-layer-group"></i> Tech Stack & Specs</button>
+                <button class="bp-tab" data-tab="tab-roadmap"><i class="fa-solid fa-calendar-check"></i> 8-Week Execution Roadmap</button>
+                <button class="bp-tab" data-tab="tab-viva"><i class="fa-solid fa-shield-halved"></i> Evaluator Viva Defense Q&A</button>
+            </div>
+
+            <!-- Tab 1: Architecture -->
+            <div id="tab-architecture" class="tab-panel glass-card active">
+                <h3><i class="fa-solid fa-sitemap text-cyan"></i> System Dataflow & Modular Architecture</h3>
+                <p>Interactive Mermaid.js structural model designed for final-year report submission.</p>
+                
+                <div class="mermaid-box" id="mermaid-container">
+                    <pre class="mermaid" id="mermaid-target">
+                    </pre>
+                </div>
+                
+                <div class="problem-box">
+                    <h4><i class="fa-solid fa-circle-exclamation text-amber"></i> Target Problem & Solution</h4>
+                    <p id="bp-problem-statement">---</p>
+                </div>
+            </div>
+
+            <!-- Tab 2: Tech Stack -->
+            <div id="tab-tech" class="tab-panel glass-card">
+                <h3><i class="fa-solid fa-microchip text-violet"></i> Technology Stack & Resource Requirements</h3>
+                
+                <div class="tech-grid" id="tech-stack-container">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="requirements-box">
+                    <div class="req-card">
+                        <h4><i class="fa-solid fa-laptop"></i> Hardware Specs</h4>
+                        <p id="req-hardware">Standard PC / Laptop</p>
+                    </div>
+                    <div class="req-card">
+                        <h4><i class="fa-solid fa-terminal"></i> Software Environment</h4>
+                        <p id="req-software">Python 3.10+, VS Code</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Roadmap -->
+            <div id="tab-roadmap" class="tab-panel glass-card">
+                <h3><i class="fa-solid fa-timeline text-emerald"></i> 8-Week Step-by-Step Implementation Roadmap</h3>
+                <p>Check off milestones as you complete your final-year development phases.</p>
+                
+                <div class="roadmap-timeline" id="roadmap-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Tab 4: Viva Prep -->
+            <div id="tab-viva" class="tab-panel glass-card">
+                <h3><i class="fa-solid fa-user-ninja text-rose"></i> Evaluator Defense & Viva Voce Q&A Prep</h3>
+                <p>Anticipated questions external examiners will ask and master responses to secure high marks.</p>
+
+                <div class="viva-grid" id="viva-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: AI MENTOR STUDIO (Hidden Initially) -->
+        <div id="section-step-4" class="step-content hidden">
+            <div class="section-header">
+                <div>
+                    <h2><i class="fa-solid fa-robot text-purple"></i> AI Project Mentor Studio</h2>
+                    <p>Get instant expert strategies for research paper publication, low-compute workarounds, and resume bullets.</p>
+                </div>
+                <button class="btn-secondary btn-sm" id="btn-back-blueprint"><i class="fa-solid fa-arrow-left"></i> Back to Blueprint</button>
+            </div>
+
+            <div class="mentor-layout">
+                <!-- Left Sidebar Prompts -->
+                <div class="mentor-sidebar glass-card">
+                    <h3>Select Mentorship Topic</h3>
+                    <div class="prompt-chips">
+                        <button class="prompt-btn active" data-prompt="viva_prep">
+                            <i class="fa-solid fa-shield-halved text-rose"></i>
+                            <span>Evaluator Viva Defense</span>
+                        </button>
+                        <button class="prompt-btn" data-prompt="research_upgrade">
+                            <i class="fa-solid fa-award text-amber"></i>
+                            <span>IEEE Paper / Research Upgrade</span>
+                        </button>
+                        <button class="prompt-btn" data-prompt="constraint_solver">
+                            <i class="fa-solid fa-bolt text-cyan"></i>
+                            <span>Compute & Data Constraints</span>
+                        </button>
+                        <button class="prompt-btn" data-prompt="resume_booster">
+                            <i class="fa-solid fa-file-invoice text-emerald"></i>
+                            <span>GitHub & Resume Impact Bullets</span>
+                        </button>
+                    </div>
+
+                    <div class="custom-prompt-box">
+                        <label for="custom-mentor-input">Ask Custom Question</label>
+                        <textarea id="custom-mentor-input" rows="3" placeholder="e.g. How do I deploy this model on a Raspberry Pi without latency?"></textarea>
+                        <button id="btn-ask-custom" class="btn-accent btn-sm"><i class="fa-solid fa-paper-plane"></i> Ask Mentor</button>
+                    </div>
+                </div>
+
+                <!-- Right Response Panel -->
+                <div class="mentor-output glass-card" id="mentor-output-container">
+                    <div class="mentor-welcome" id="mentor-welcome-state">
+                        <i class="fa-solid fa-brain-circuit mentor-big-icon"></i>
+                        <h3>Your AI Mentor is Ready</h3>
+                        <p>Click any topic on the left to receive custom strategy steps for your project.</p>
+                    </div>
+                    
+                    <div class="mentor-content-area hidden" id="mentor-content-area">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SAVED PROJECTS MODAL -->
+    <div id="saved-modal" class="modal-backdrop hidden">
+        <div class="modal-box glass-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-bookmark text-violet"></i> Your Saved Project Blueprints</h2>
+                <button id="btn-close-saved" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="saved-modal-body">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPORT README MODAL -->
+    <div id="readme-modal" class="modal-backdrop hidden">
+        <div class="modal-box glass-card modal-lg">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-file-code text-cyan"></i> Export GitHub README.md</h2>
+                <button id="btn-close-readme" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="code-header">
+                    <span>README.md Preview</span>
+                    <button id="btn-copy-readme" class="btn-secondary btn-sm"><i class="fa-solid fa-copy"></i> Copy Markdown</button>
+                </div>
+                <textarea id="readme-text-area" readonly class="code-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner-box">
+            <div class="spinner"></div>
+            <p id="loading-text">Synthesizing Project Concepts...</p>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

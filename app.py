@@ -1,0 +1,181 @@
+import os
+import json
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
+from data_engine import generate_ideas_engine, generate_blueprint_engine
+from mentor_engine import get_mentor_advice
+
+app = Flask(__name__)
+CORS(app)
+
+SAVED_FILE = os.path.join(os.path.dirname(__file__), 'saved_projects.json')
+
+def load_saved_projects():
+    if not os.path.exists(SAVED_FILE):
+        return []
+    try:
+        with open(SAVED_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+def save_projects_to_file(projects):
+    with open(SAVED_FILE, 'w', encoding='utf-8') as f:
+        json.dump(projects, f, indent=2)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/api/generate-ideas', methods=['POST'])
+def generate_ideas_api():
+    try:
+        data = request.json or {}
+        domain = data.get('domain', 'Healthcare')
+        skills = data.get('skills', 'Python, React, Machine Learning')
+        category = data.get('category', 'AI/ML Model & Web App')
+        difficulty = data.get('difficulty', 'Intermediate')
+        goal = data.get('goal', 'Job Portfolio & Resumes')
+        api_key = data.get('api_key', '')
+
+        ideas = generate_ideas_engine(domain, skills, category, difficulty, goal, api_key)
+        return jsonify({'success': True, 'ideas': ideas})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/generate-blueprint', methods=['POST'])
+def generate_blueprint_api():
+    try:
+        data = request.json or {}
+        idea_data = data.get('idea', {})
+        api_key = data.get('api_key', '')
+
+        blueprint = generate_blueprint_engine(idea_data, api_key)
+        return jsonify({'success': True, 'blueprint': blueprint})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/mentor-advise', methods=['POST'])
+def mentor_advise_api():
+    try:
+        data = request.json or {}
+        prompt_type = data.get('prompt_type', 'viva_prep')
+        project_title = data.get('project_title', '')
+        domain = data.get('domain', 'Healthcare')
+        skills = data.get('skills', [])
+        custom_question = data.get('custom_question', '')
+
+        advice = get_mentor_advice(prompt_type, project_title, domain, skills, custom_question)
+        return jsonify({'success': True, 'advice': advice})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/saved-projects', methods=['GET'])
+def get_saved_projects_api():
+    projects = load_saved_projects()
+    return jsonify({'success': True, 'projects': projects})
+
+@app.route('/api/save-project', methods=['POST'])
+def save_project_api():
+    try:
+        blueprint = request.json or {}
+        if not blueprint.get('title'):
+            return jsonify({'success': False, 'error': 'Invalid blueprint structure'}), 400
+
+        projects = load_saved_projects()
+        # Prevent duplicate entries by title
+        existing_titles = [p.get('title') for p in projects]
+        if blueprint.get('title') not in existing_titles:
+            projects.append(blueprint)
+            save_projects_to_file(projects)
+            return jsonify({'success': True, 'message': 'Project saved successfully!', 'saved_count': len(projects)})
+        else:
+            return jsonify({'success': True, 'message': 'Project already in saved list!', 'saved_count': len(projects)})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/saved-projects/<path:title>', methods=['DELETE'])
+def delete_saved_project_api(title):
+    try:
+        projects = load_saved_projects()
+        updated = [p for p in projects if p.get('title') != title]
+        save_projects_to_file(updated)
+        return jsonify({'success': True, 'message': 'Project removed', 'saved_count': len(updated)})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/export-readme', methods=['POST'])
+def export_readme_api():
+    try:
+        bp = request.json or {}
+        title = bp.get('title', 'Final Year Project')
+        tagline = bp.get('tagline', '')
+        problem = bp.get('problem_statement', '')
+        tech = bp.get('tech_stack', {})
+        features = bp.get('features', {})
+        roadmap = bp.get('roadmap_8_weeks', [])
+
+        readme_content = f"""# {title}
+> **{tagline}**
+
+## 📌 Problem Statement
+{problem}
+
+---
+
+## 🛠️ Technology Stack
+- **Frontend:** {tech.get('Frontend', 'N/A')}
+- **Backend:** {tech.get('Backend', 'N/A')}
+- **AI / ML Engine:** {tech.get('AI_ML', 'N/A')}
+- **Database:** {tech.get('Database', 'N/A')}
+- **Deployment:** {tech.get('DevOps_Deployment', 'N/A')}
+
+---
+
+## ✨ Key Features
+
+### MVP Features (Phase 1)
+"""
+        for feat in features.get('mvp', []):
+            readme_content += f"- [ ] {feat}\n"
+
+        readme_content += "\n### Advanced Features (Phase 2)\n"
+        for feat in features.get('advanced', []):
+            readme_content += f"- [ ] {feat}\n"
+
+        readme_content += "\n---\n\n## 🚀 8-Week Execution Roadmap\n"
+        for phase in roadmap:
+            readme_content += f"### {phase.get('week')}: {phase.get('title')}\n"
+            for t in phase.get('tasks', []):
+                readme_content += f"- [ ] {t}\n"
+            readme_content += "\n"
+
+        readme_content += """---
+## 💻 Setup & Installation
+```bash
+# Clone the repository
+git clone https://github.com/your-username/your-project-name.git
+cd your-project-name
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\\Scripts\\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run application
+python app.py
+```
+
+---
+*Generated using ProjectCraft AI - Final-Year Project Studio*
+"""
+        return jsonify({'success': True, 'readme': readme_content})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+if __name__ == '__main__':
+    print("Starting ProjectCraft AI Server on http://127.0.0.1:5000")
+    app.run(host='127.0.0.1', port=5000, debug=True)
+
