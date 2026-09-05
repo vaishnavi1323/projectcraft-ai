@@ -157,8 +157,16 @@ def delete_saved_project_api(title=None):
             return jsonify({'success': False, 'error': 'No title provided'}), 400
 
         projects = load_saved_projects()
-        target_title = title.strip().lower()
-        updated = [p for p in projects if p.get('title', '').strip().lower() != target_title]
+        target = title.strip().lower()
+
+        updated = []
+        for p in projects:
+            p_title = p.get('title', '').strip().lower()
+            # Match exact title, decoded html entities, or reciprocal inclusion
+            if p_title == target or p_title.replace('&', '&amp;') == target or target in p_title or p_title in target:
+                continue # Skip / Delete this project
+            updated.append(p)
+
         save_projects_to_file(updated)
         return jsonify({'success': True, 'message': 'Project removed', 'saved_count': len(updated)})
     except Exception as e:

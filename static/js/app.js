@@ -563,10 +563,9 @@ async function openSavedProjectsModal() {
 
                 div.querySelector('.btn-delete-saved').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    const btn = e.currentTarget.closest('.btn-delete-saved');
-                    const title = btn.getAttribute('data-title');
-                    if (confirm(`Are you sure you want to delete "${title}"?`)) {
-                        await deleteSavedProject(title);
+                    const titleToDelete = p.title;
+                    if (confirm(`Are you sure you want to delete "${titleToDelete}"?`)) {
+                        await deleteSavedProject(titleToDelete);
                     }
                 });
 
