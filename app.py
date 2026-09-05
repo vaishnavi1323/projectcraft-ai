@@ -146,11 +146,19 @@ def save_project_api():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/api/delete-project', methods=['POST'])
 @app.route('/api/saved-projects/<path:title>', methods=['DELETE'])
-def delete_saved_project_api(title):
+def delete_saved_project_api(title=None):
     try:
+        if not title and request.is_json:
+            title = request.json.get('title', '')
+        
+        if not title:
+            return jsonify({'success': False, 'error': 'No title provided'}), 400
+
         projects = load_saved_projects()
-        updated = [p for p in projects if p.get('title') != title]
+        target_title = title.strip().lower()
+        updated = [p for p in projects if p.get('title', '').strip().lower() != target_title]
         save_projects_to_file(updated)
         return jsonify({'success': True, 'message': 'Project removed', 'saved_count': len(updated)})
     except Exception as e:
@@ -176,11 +184,11 @@ def export_readme_api():
 ---
 
 ## 🛠️ Technology Stack
-- **Frontend:** {tech.get('Frontend', 'N/A')}
-- **Backend:** {tech.get('Backend', 'N/A')}
-- **AI / ML Engine:** {tech.get('AI_ML', 'N/A')}
-- **Database:** {tech.get('Database', 'N/A')}
-- **Deployment:** {tech.get('DevOps_Deployment', 'N/A')}
+- **Frontend:** {tech.get('Frontend', 'N/A') if isinstance(tech, dict) else 'N/A'}
+- **Backend:** {tech.get('Backend', 'N/A') if isinstance(tech, dict) else 'N/A'}
+- **AI / ML Engine:** {tech.get('AI_ML', 'N/A') if isinstance(tech, dict) else 'N/A'}
+- **Database:** {tech.get('Database', 'N/A') if isinstance(tech, dict) else 'N/A'}
+- **Deployment:** {tech.get('DevOps_Deployment', 'N/A') if isinstance(tech, dict) else 'N/A'}
 
 ---
 
@@ -188,19 +196,31 @@ def export_readme_api():
 
 ### MVP Features (Phase 1)
 """
-        for feat in features.get('mvp', []):
+        if isinstance(features, dict):
+            mvp_feats = features.get('mvp', [])
+            adv_feats = features.get('advanced', [])
+        elif isinstance(features, list):
+            mvp_feats = features
+            adv_feats = []
+        else:
+            mvp_feats = []
+            adv_feats = []
+
+        for feat in mvp_feats:
             readme_content += f"- [ ] {feat}\n"
 
         readme_content += "\n### Advanced Features (Phase 2)\n"
-        for feat in features.get('advanced', []):
+        for feat in adv_feats:
             readme_content += f"- [ ] {feat}\n"
 
         readme_content += "\n---\n\n## 🚀 8-Week Execution Roadmap\n"
-        for phase in roadmap:
-            readme_content += f"### {phase.get('week')}: {phase.get('title')}\n"
-            for t in phase.get('tasks', []):
-                readme_content += f"- [ ] {t}\n"
-            readme_content += "\n"
+        if isinstance(roadmap, list):
+            for phase in roadmap:
+                if isinstance(phase, dict):
+                    readme_content += f"### {phase.get('week', '')}: {phase.get('title', '')}\n"
+                    for t in phase.get('tasks', []):
+                        readme_content += f"- [ ] {t}\n"
+                    readme_content += "\n"
 
         readme_content += """---
 ## 💻 Setup & Installation

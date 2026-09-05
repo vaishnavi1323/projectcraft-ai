@@ -117,6 +117,24 @@ function initEventListeners() {
             fetchMentorAdvice('custom', text);
         }
     });
+
+    // Export README Button Listeners
+    const btnHeaderReadme = document.getElementById('btn-header-readme');
+    if (btnHeaderReadme) btnHeaderReadme.addEventListener('click', exportReadme);
+
+    const btnExportReadme = document.getElementById('btn-export-readme');
+    if (btnExportReadme) btnExportReadme.addEventListener('click', exportReadme);
+
+    const btnCloseReadme = document.getElementById('btn-close-readme');
+    if (btnCloseReadme) btnCloseReadme.addEventListener('click', () => {
+        document.getElementById('readme-modal').classList.add('hidden');
+    });
+
+    const btnCopyReadme = document.getElementById('btn-copy-readme');
+    if (btnCopyReadme) btnCopyReadme.addEventListener('click', copyReadmeText);
+
+    const btnDownloadReadmeFile = document.getElementById('btn-download-readme-file');
+    if (btnDownloadReadmeFile) btnDownloadReadmeFile.addEventListener('click', downloadReadmeFile);
 }
 
 // STEP SWITCHER
@@ -453,7 +471,20 @@ async function saveCurrentProject() {
 
 // EXPORT README
 async function exportReadme() {
-    if (!currentBlueprint) return;
+    if (!currentBlueprint) {
+        try {
+            const savedRes = await fetch('/api/saved-projects');
+            const savedData = await savedRes.json();
+            if (savedData.projects && savedData.projects.length > 0) {
+                currentBlueprint = savedData.projects[0];
+            }
+        } catch (e) {}
+    }
+
+    if (!currentBlueprint) {
+        alert('Please select or generate a project blueprint first!');
+        return;
+    }
 
     showLoading("Formatting GitHub README.md...");
     try {
@@ -468,6 +499,8 @@ async function exportReadme() {
         if (data.success && data.readme) {
             document.getElementById('readme-text-area').value = data.readme;
             document.getElementById('readme-modal').classList.remove('hidden');
+        } else {
+            alert('Error formatting README: ' + (data.error || 'Unknown error'));
         }
     } catch (e) {
         hideLoading();
@@ -482,6 +515,20 @@ function copyReadmeText() {
     alert('README markdown copied to clipboard!');
 }
 
+function downloadReadmeFile() {
+    const text = document.getElementById('readme-text-area').value;
+    if (!text) return;
+    const blob = new Blob([text], { type: 'text/markdown' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const cleanTitle = currentBlueprint ? currentBlueprint.title.replace(/[^a-zA-Z0-9_]/g, '_') : 'Project';
+    a.download = `${cleanTitle}_README.md`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
 // SAVED PROJECTS MODAL
 async function openSavedProjectsModal() {
     try {
@@ -492,13 +539,14 @@ async function openSavedProjectsModal() {
 
         if (data.projects && data.projects.length > 0) {
             data.projects.forEach(p => {
+                const safeTitle = (p.title || '').replace(/"/g, '&quot;');
                 const div = document.createElement('div');
                 div.className = 'viva-card';
                 div.style.marginBottom = '1rem';
                 div.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span class="tag-badge">${p.domain}</span>
-                        <button class="btn-secondary btn-sm btn-delete-saved" data-title="${p.title}"><i class="fa-solid fa-trash text-rose"></i></button>
+                        <button class="btn-secondary btn-sm btn-delete-saved" data-title="${safeTitle}" style="cursor: pointer;"><i class="fa-solid fa-trash text-rose"></i> Delete</button>
                     </div>
                     <h3 style="margin: 0.5rem 0;">${p.title}</h3>
                     <p style="font-size: 0.85rem; color: var(--text-muted);">${p.tagline}</p>
@@ -514,10 +562,12 @@ async function openSavedProjectsModal() {
                 });
 
                 div.querySelector('.btn-delete-saved').addEventListener('click', async (e) => {
-                    const title = e.currentTarget.dataset.title;
-                    await fetch(`/api/saved-projects/${encodeURIComponent(title)}`, { method: 'DELETE' });
-                    openSavedProjectsModal();
-                    fetchSavedProjectsCount();
+                    e.stopPropagation();
+                    const btn = e.currentTarget.closest('.btn-delete-saved');
+                    const title = btn.getAttribute('data-title');
+                    if (confirm(`Are you sure you want to delete "${title}"?`)) {
+                        await deleteSavedProject(title);
+                    }
                 });
 
                 body.appendChild(div);
@@ -529,6 +579,28 @@ async function openSavedProjectsModal() {
         document.getElementById('saved-modal').classList.remove('hidden');
     } catch (e) {
         alert('Error fetching saved projects.');
+    }
+}
+
+async function deleteSavedProject(title) {
+    try {
+        showLoading("Deleting project...");
+        const res = await fetch('/api/delete-project', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: title })
+        });
+        const data = await res.json();
+        hideLoading();
+        if (data.success) {
+            openSavedProjectsModal();
+            fetchSavedProjectsCount();
+        } else {
+            alert('Error deleting project: ' + (data.error || 'Failed'));
+        }
+    } catch (e) {
+        hideLoading();
+        alert('Error deleting saved project.');
     }
 }
 
