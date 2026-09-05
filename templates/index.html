@@ -194,6 +194,7 @@
                 <button class="bp-tab" data-tab="tab-tech"><i class="fa-solid fa-layer-group"></i> Tech Stack & Specs</button>
                 <button class="bp-tab" data-tab="tab-roadmap"><i class="fa-solid fa-calendar-check"></i> 8-Week Execution Roadmap</button>
                 <button class="bp-tab" data-tab="tab-viva"><i class="fa-solid fa-shield-halved"></i> Evaluator Viva Defense Q&A</button>
+                <button class="bp-tab" data-tab="tab-tracker"><i class="fa-solid fa-chart-pie"></i> Completion & Technical Radar</button>
             </div>
 
             <!-- Tab 1: Architecture -->
@@ -275,6 +276,123 @@
 
                 <div class="viva-grid" id="viva-container">
                     <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Tab 5: Completion & Technical Radar -->
+            <div id="tab-tracker" class="tab-panel glass-card">
+                <h3><i class="fa-solid fa-chart-pie text-cyan"></i> Capstone Completion & Technical Radar Analytics</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Real-time progress gauge and 5-axis technical depth spider graph for project evaluations.</p>
+                
+                <div class="tracker-panel-grid">
+                    <!-- Radial Gauge & Pillars Box -->
+                    <div class="tracker-card">
+                        <h4 style="font-family: var(--font-heading); color: white; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-circle-notch text-cyan"></i> Submission Readiness Score
+                        </h4>
+                        <div class="gauge-center-wrapper">
+                            <svg class="radial-svg" width="160" height="160" viewBox="0 0 160 160">
+                                <defs>
+                                    <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="var(--neon-purple)" />
+                                        <stop offset="100%" stop-color="var(--neon-cyan)" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="gauge-bg" cx="80" cy="80" r="70"></circle>
+                                <circle class="gauge-fill" id="radial-gauge-ring" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div class="gauge-score-display">
+                                <span class="gauge-percentage" id="gauge-percent-text">85%</span>
+                                <span class="gauge-label-text">Ready</span>
+                            </div>
+                        </div>
+
+                        <div class="pillar-list">
+                            <div class="pillar-item">
+                                <div class="pillar-info">
+                                    <span>Dataset & Exploratory Data Analysis</span>
+                                    <strong class="text-emerald" id="pillar-val-eda">100%</strong>
+                                </div>
+                                <div class="pillar-bar-bg"><div class="pillar-bar-fill" id="pillar-bar-eda" style="width: 100%; background: var(--neon-emerald);"></div></div>
+                            </div>
+
+                            <div class="pillar-item">
+                                <div class="pillar-info">
+                                    <span>Backend REST API & ML Pipeline</span>
+                                    <strong class="text-cyan" id="pillar-val-backend">85%</strong>
+                                </div>
+                                <div class="pillar-bar-bg"><div class="pillar-bar-fill" id="pillar-bar-backend" style="width: 85%; background: var(--neon-cyan);"></div></div>
+                            </div>
+
+                            <div class="pillar-item">
+                                <div class="pillar-info">
+                                    <span>Frontend UI & Interactive Dashboard</span>
+                                    <strong class="text-violet" id="pillar-val-ui">90%</strong>
+                                </div>
+                                <div class="pillar-bar-bg"><div class="pillar-bar-fill" id="pillar-bar-ui" style="width: 90%; background: var(--neon-purple);"></div></div>
+                            </div>
+
+                            <div class="pillar-item">
+                                <div class="pillar-info">
+                                    <span>IEEE Paper & Documentation</span>
+                                    <strong class="text-amber" id="pillar-val-docs">75%</strong>
+                                </div>
+                                <div class="pillar-bar-bg"><div class="pillar-bar-fill" id="pillar-bar-docs" style="width: 75%; background: var(--neon-amber);"></div></div>
+                            </div>
+
+                            <div class="pillar-item">
+                                <div class="pillar-info">
+                                    <span>Viva Defense & Q&A Mastery</span>
+                                    <strong class="text-rose" id="pillar-val-viva">85%</strong>
+                                </div>
+                                <div class="pillar-bar-bg"><div class="pillar-bar-fill" id="pillar-bar-viva" style="width: 85%; background: var(--neon-pink);"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SVG Technical Radar Box -->
+                    <div class="tracker-card">
+                        <h4 style="font-family: var(--font-heading); color: white; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <i class="fa-solid fa-spider text-violet"></i> Technical Depth Radar Chart
+                        </h4>
+
+                        <div class="radar-svg-box">
+                            <svg width="300" height="260" viewBox="0 0 300 260">
+                                <!-- Grid Background Polygons -->
+                                <polygon class="radar-polygon-grid" points="150,30 245,99 209,211 91,211 55,99"></polygon>
+                                <polygon class="radar-polygon-grid" points="150,60 221,112 194,196 106,196 79,112"></polygon>
+                                <polygon class="radar-polygon-grid" points="150,90 197,125 179,180 121,180 103,125"></polygon>
+
+                                <!-- Axis Lines -->
+                                <line class="radar-axis-line" x1="150" y1="150" x2="150" y2="30"></line>
+                                <line class="radar-axis-line" x1="150" y1="150" x2="245" y2="99"></line>
+                                <line class="radar-axis-line" x1="150" y1="150" x2="209" y2="211"></line>
+                                <line class="radar-axis-line" x1="150" y1="150" x2="91" y2="211"></line>
+                                <line class="radar-axis-line" x1="150" y1="150" x2="55" y2="99"></line>
+
+                                <!-- Dynamic Radar Polygon Area -->
+                                <polygon class="radar-area" id="radar-polygon" points="150,42 235,108 200,205 99,203 62,104"></polygon>
+
+                                <!-- Radar Dots -->
+                                <circle class="radar-point" cx="150" cy="42" r="5"></circle>
+                                <circle class="radar-point" cx="235" cy="108" r="5"></circle>
+                                <circle class="radar-point" cx="200" cy="205" r="5"></circle>
+                                <circle class="radar-point" cx="99" cy="203" r="5"></circle>
+                                <circle class="radar-point" cx="62" cy="104" r="5"></circle>
+
+                                <!-- Labels -->
+                                <text class="radar-label" x="150" y="18" text-anchor="middle">Complexity (8.8/10)</text>
+                                <text class="radar-label" x="250" y="99" text-anchor="start">Data Scale (9.2/10)</text>
+                                <text class="radar-label" x="215" y="228" text-anchor="start">IEEE Novelty (9.4/10)</text>
+                                <text class="radar-label" x="85" y="228" text-anchor="end">Full-Stack UI (8.9/10)</text>
+                                <text class="radar-label" x="48" y="99" text-anchor="end">Feasibility (9.5/10)</text>
+                            </svg>
+                        </div>
+
+                        <div style="background: rgba(0, 245, 212, 0.06); border: 1px solid rgba(0, 245, 212, 0.2); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.82rem; color: #E2E8F0; margin-top: 0.5rem;">
+                            <strong class="text-cyan"><i class="fa-solid fa-lightbulb"></i> Evaluator Insight:</strong> High scores in IEEE Research Novelty and Hardware Feasibility make this capstone an ideal candidate for A+ distinction and conference publication.
+                        </div>
+                    </div>
                 </div>
             </div>
 

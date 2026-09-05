@@ -311,7 +311,7 @@ function populateBlueprintUI(bp) {
             <ul class="phase-tasks">
                 ${phase.tasks.map(t => `
                     <li>
-                        <input type="checkbox" onchange="this.parentElement.style.textDecoration = this.checked ? 'line-through' : 'none'">
+                        <input type="checkbox" onchange="this.parentElement.style.textDecoration = this.checked ? 'line-through' : 'none'; updateTrackerGaugeAndPillars();">
                         <span>${t}</span>
                     </li>
                 `).join('')}
@@ -342,6 +342,29 @@ function populateBlueprintUI(bp) {
             vivaSelect.appendChild(opt);
         }
     });
+
+    updateTrackerGaugeAndPillars();
+}
+
+function updateTrackerGaugeAndPillars() {
+    const checkboxes = document.querySelectorAll('#roadmap-container input[type="checkbox"]');
+    if (checkboxes.length === 0) return;
+
+    let checkedCount = 0;
+    checkboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+    });
+
+    const percent = Math.min(100, Math.max(50, Math.round(50 + (checkedCount / checkboxes.length) * 50)));
+
+    const ring = document.getElementById('radial-gauge-ring');
+    const txt = document.getElementById('gauge-percent-text');
+    
+    if (ring && txt) {
+        txt.textContent = `${percent}%`;
+        const offset = 440 * (1 - percent / 100);
+        ring.style.strokeDashoffset = offset;
+    }
 }
 
 // DOWNLOAD SCAFFOLD ZIP
