@@ -121,25 +121,13 @@ body {
     gap: 0.85rem;
 }
 
-.logo-icon {
-    width: 44px;
-    height: 44px;
+.brand-logo-img {
+    height: 42px;
+    width: 42px;
+    object-fit: contain;
     border-radius: var(--radius-md);
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink));
-    background-size: 200% 200%;
-    animation: gradientShift 6s ease infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    color: white;
-    box-shadow: 0 0 25px rgba(157, 78, 221, 0.5);
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    border: 1px solid var(--border-glow);
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
 }
 
 .logo-text {
@@ -148,6 +136,7 @@ body {
     font-weight: 800;
     letter-spacing: -0.5px;
 }
+
 
 .badge-ai {
     background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
